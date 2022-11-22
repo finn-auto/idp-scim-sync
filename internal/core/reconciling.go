@@ -79,9 +79,9 @@ func reconcilingGroups(ctx context.Context, scim SCIMService, create, update, re
 		log.Info("no groups to be deleted")
 	} else {
 		log.WithField("quantity", remove.Items).Warn("deleting groups")
-		if err := scim.DeleteGroups(ctx, remove); err != nil {
-			return nil, nil, fmt.Errorf("error deleting groups from SCIM provider: %w", err)
-		}
+		// if err := scim.DeleteGroups(ctx, remove); err != nil {
+		// 	return nil, nil, fmt.Errorf("error deleting groups from SCIM provider: %w", err)
+		// }
 	}
 
 	return
@@ -132,9 +132,9 @@ func reconcilingUsers(ctx context.Context, scim SCIMService, create, update, rem
 		log.Info("no users to be removed")
 	} else {
 		log.WithField("quantity", remove.Items).Warn("deleting users")
-		if err := scim.DeleteUsers(ctx, remove); err != nil {
-			return nil, nil, fmt.Errorf("error deleting users from SCIM provider: %w", err)
-		}
+		// if err := scim.DeleteUsers(ctx, remove); err != nil {
+		// 	return nil, nil, fmt.Errorf("error deleting users from SCIM provider: %w", err)
+		// }
 	}
 
 	return
@@ -171,9 +171,9 @@ func reconcilingGroupsMembers(ctx context.Context, scim SCIMService, create, rem
 		log.Info("no users to be removed from groups")
 	} else {
 		log.WithField("quantity", remove.Items).Warn("removing users from groups")
-		if err := scim.DeleteGroupsMembers(ctx, remove); err != nil {
-			return nil, fmt.Errorf("error removing groups members from SCIM provider: %w", err)
-		}
+		// if err := scim.DeleteGroupsMembers(ctx, remove); err != nil {
+		// 	return nil, fmt.Errorf("error removing groups members from SCIM provider: %w", err)
+		// }
 	}
 
 	return
