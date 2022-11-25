@@ -22,6 +22,7 @@ Metadata:
           - MemorySize
           - Timeout
           - LogGroupRetentionDays
+          - SNSAlarmTopicName
       - Label:
           default: "State File - Configuration"
         Parameters:
@@ -214,6 +215,11 @@ Parameters:
       - 731
       - 1827
       - 3653
+
+  SNSAlarmTopicName:
+    Type: String
+    Description: SNS Topic name on which to send Cloudwatch alarms.
+    Default: "idp-scim-sync-alarm"
 
 Resources:
   LambdaFunction:
@@ -449,6 +455,29 @@ Resources:
     Properties:
       LogGroupName: "/aws/lambda/idp-scim-sync"
       RetentionInDays: !Ref LogGroupRetentionDays
+
+  Alarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: "idp-scim-sync-errors-alarm"
+      AlarmActions:
+        - !Ref SNSAlarmTopic
+      Namespace: "AWS/Lambda"
+      MetricName: "Errors"
+      Dimensions:
+      - Name: "FunctionName"
+        Value: "idp-scim-sync"
+      Statistic: "Sum"
+      ComparisonOperator: "GreaterThanThreshold"
+      Threshold: 0
+      EvaluationPeriods: 5
+      Period: 60
+      TreatMissingData: "missing"
+
+  SNSAlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Ref SNSAlarmTopicName
 
 Outputs:
   LambdaFunctionArn:
