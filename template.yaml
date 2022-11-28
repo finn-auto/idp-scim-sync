@@ -462,6 +462,8 @@ Resources:
       AlarmName: "idp-scim-sync-errors-alarm"
       AlarmActions:
         - !Ref SNSAlarmTopic
+      OKActions:
+        - !Ref SNSAlarmTopic
       Namespace: "AWS/Lambda"
       MetricName: "Errors"
       Dimensions:
@@ -470,7 +472,7 @@ Resources:
       Statistic: "Sum"
       ComparisonOperator: "GreaterThanThreshold"
       Threshold: 0
-      EvaluationPeriods: 5
+      EvaluationPeriods: 1
       Period: 60
       TreatMissingData: "missing"
 
