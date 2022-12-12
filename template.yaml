@@ -457,6 +457,7 @@ Resources:
       RetentionInDays: !Ref LogGroupRetentionDays
 
   Alarm:
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudwatch-alarm.html
     Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmName: "idp-scim-sync-errors-alarm"
@@ -470,11 +471,11 @@ Resources:
       - Name: "FunctionName"
         Value: "idp-scim-sync"
       Statistic: "Sum"
-      ComparisonOperator: "GreaterThanThreshold"
-      Threshold: 0
-      EvaluationPeriods: 1
-      Period: 60
-      TreatMissingData: "missing"
+      ComparisonOperator: "GreaterThanOrEqualToThreshold"
+      Threshold: 1
+      EvaluationPeriods: 5
+      Period: 900 # 15 minutes
+      TreatMissingData: "ignore"
 
   SNSAlarmTopic:
     Type: AWS::SNS::Topic
